@@ -1,6 +1,5 @@
-# covid19
+# Real time(almost real time) statistics of Covid19
 
 
-Real Time statistics of Covid19.
-
-Just a spring web app 
+Was at home working remotely and out of boredom decided to make a web app. idea inspired by javaBrains
+ 
