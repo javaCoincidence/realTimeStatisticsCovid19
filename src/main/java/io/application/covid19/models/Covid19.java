@@ -14,13 +14,4 @@ import java.util.List;
 public class Covid19 {
 
     private final List<Covid19Record> records;
-    private Integer totalCases;
-
-    public Integer getTotalCases() {
-        return records.stream().mapToInt(Covid19Record::getLatestCases).sum();
-    }
-
-    public Integer getTotalNewCases() {
-        return records.stream().mapToInt(Covid19Record::getDiffFromLastDay).sum();
-    }
 }

@@ -32,8 +32,10 @@
                         <thead>
                         <tr class="row100 head">
                             <th class="cell100 column1">Country</th>
-                            <th class="cell100 column2">Total Cases Reported</th>
-                            <th class="cell100 column3">Changes Since Last Day</th>
+                            <th class="cell100 column2">Date</th>
+                            <th class="cell100 column3">Confirmed</th>
+                            <th class="cell100 column3">Deaths</th>
+                            <th class="cell100 column3">Recovered</th>
                         </tr>
                         </thead>
                     </table>
@@ -45,8 +47,10 @@
                         <tr class="row100 body"
                             th:each="info : ${info}">
                             <td class="cell100 column1" th:text="${info.getCountry()}"></td>
-                            <td class="cell100 column2" th:text="${info.getLatestCases()}"></td>
-                            <td class="cell100 column3" th:text="${info.getDiffFromLastDay()}"></td>
+                            <td class="cell100 column2" th:each="data : ${info.getData()}" th:text="${data.getDate()}"></td>
+                            <td class="cell100 column3" th:each="data : ${info.getData()}" th:text="${data.getConfirmed()}"></td>
+                            <td class="cell100 column3" th:each="data : ${info.getData()}" th:text="${data.getDeaths()}"></td>
+                            <td class="cell100 column3" th:each="data : ${info.getData()}" th:text="${data.getRecovered()}"></td>
                         </tr>
                         </tbody>
                     </table>
