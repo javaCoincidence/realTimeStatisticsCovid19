@@ -45,9 +45,7 @@ class IntegrationProcessorImpl implements IntegrationProcessor {
 
     private Integration findOne(final IntegrationType integrationType) {
         return ofNullable(integrationFactory.fetch(integrationType))
-                .stream()
                 .filter(Integration::enabled)
-                .findFirst()
                 .orElseThrow(() -> new IntegrationNotEnabledException("", integrationType));
     }
 }
