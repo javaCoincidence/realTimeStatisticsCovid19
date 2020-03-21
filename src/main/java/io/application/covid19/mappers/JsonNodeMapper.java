@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
@@ -36,6 +37,7 @@ public interface JsonNodeMapper {
             final Map.Entry<String, JsonNode> entry = it.next();
             list.add(covid19Object(entry.getKey(), entry.getValue()));
         }
+        list.sort(comparing(Covid19Record::getCountry));
         return new Covid19(list);
     }
 }

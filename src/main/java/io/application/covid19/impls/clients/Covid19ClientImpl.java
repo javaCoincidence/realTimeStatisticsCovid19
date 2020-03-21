@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import static java.util.Objects.requireNonNull;
+
 @Component
 class Covid19ClientImpl implements Covid19Client {
 
@@ -25,6 +27,6 @@ class Covid19ClientImpl implements Covid19Client {
 
     @Override
     public Covid19 fetchStat() {
-        return jsonNodeMapper.map(restTemplate.getForEntity(url, JsonNode.class).getBody());
+        return jsonNodeMapper.map(requireNonNull(restTemplate.getForEntity(url, JsonNode.class).getBody()));
     }
 }
