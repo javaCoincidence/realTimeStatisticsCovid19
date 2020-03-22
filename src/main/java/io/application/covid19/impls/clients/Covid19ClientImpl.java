@@ -2,7 +2,6 @@ package io.application.covid19.impls.clients;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.application.covid19.apis.Covid19Client;
-import io.application.covid19.http.annotations.Covid19HttpClient;
 import io.application.covid19.mappers.JsonNodeMapper;
 import io.application.covid19.models.Covid19;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,7 @@ class Covid19ClientImpl implements Covid19Client {
     @Value("${covid19-url}")
     private String url;
 
-    public Covid19ClientImpl(@Covid19HttpClient RestTemplate restTemplate, JsonNodeMapper jsonNodeMapper) {
+    public Covid19ClientImpl(RestTemplate restTemplate, JsonNodeMapper jsonNodeMapper) {
         this.restTemplate = restTemplate;
         this.jsonNodeMapper = jsonNodeMapper;
     }
