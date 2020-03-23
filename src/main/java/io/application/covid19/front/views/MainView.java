@@ -66,7 +66,7 @@ public class MainView extends VerticalLayout {
         grid.addItemClickListener((ComponentEventListener<ItemClickEvent<CovidEntry>>) event -> itemClick(event.getItem()));
         grid.setItems(records);
 
-        final CovidEntry currentEntry = getCurrentCountry(jsonNodeMapper.mapToCountryInfo(locationService.getLocationInfo("213.230.95.59")), records);
+        final CovidEntry currentEntry = getCurrentCountry(jsonNodeMapper.mapToCountryInfo(locationService.getLocationInfo(request.getRemoteAddr())), records);
         grid.select(currentEntry);
         grid.scrollToIndex(binarySearch(records, currentEntry, comparing(CovidEntry::getCountry)));
         itemClick(currentEntry);
