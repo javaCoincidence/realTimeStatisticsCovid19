@@ -1,6 +1,7 @@
 package io.application.covid19.mappers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.application.covid19.models.CountryInfo;
 import io.application.covid19.models.Covid19;
 import io.application.covid19.models.Covid19Record;
 import lombok.SneakyThrows;
@@ -39,5 +40,9 @@ public interface JsonNodeMapper {
         }
         list.sort(comparing(Covid19Record::getCountry));
         return new Covid19(list);
+    }
+
+    default CountryInfo mapToCountryInfo(final JsonNode root) {
+        return new CountryInfo(root.get("country_name").asText(), root.get("country_code").asText());
     }
 }
