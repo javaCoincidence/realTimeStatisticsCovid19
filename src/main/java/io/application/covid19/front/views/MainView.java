@@ -1,4 +1,4 @@
-package io.application.covid19.views;
+package io.application.covid19.front.views;
 
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.charts.Chart;
@@ -19,7 +19,6 @@ import io.application.covid19.mappers.JsonNodeMapper;
 import io.application.covid19.models.CountryInfo;
 import io.application.covid19.models.Covid19Record;
 import io.application.covid19.models.CovidEntry;
-import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,7 +36,6 @@ import static java.util.Locale.getDefault;
 import static java.util.stream.Collectors.toList;
 
 @Route
-@Log4j2
 public class MainView extends VerticalLayout {
 
     private final Chart pieChart = new Chart(PIE);
@@ -115,8 +113,8 @@ public class MainView extends VerticalLayout {
 
     private void initChart() {
 
-        pieChart.setWidth("120%");
-        pieChart.setHeight("120%");
+        pieChart.setWidth("115%");
+        pieChart.setHeight("115%");
 
         final Configuration configuration = pieChart.getConfiguration();
         final Tooltip tooltip = new Tooltip();
