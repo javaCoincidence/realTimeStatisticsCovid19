@@ -20,11 +20,11 @@ import static java.util.stream.StreamSupport.stream;
 public interface JsonNodeMapper {
 
     @SneakyThrows
-    static Covid19Record covid19Object(final String fieldName, final JsonNode node) {
+    private static Covid19Record covid19Object(final String fieldName, final JsonNode node) {
         return new Covid19Record(fieldName, data(node));
     }
 
-    static List<Covid19Record.Data> data(final JsonNode node) {
+    private static List<Covid19Record.Data> data(final JsonNode node) {
         return stream(node.spliterator(), true)
                 .map(data -> new Covid19Record.Data(data.get("date").asText(), data.get("confirmed").asInt(),
                         data.get("deaths").asInt(), data.get("recovered").asInt()))

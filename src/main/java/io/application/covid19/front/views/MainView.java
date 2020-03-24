@@ -13,6 +13,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.PWA;
 import io.application.covid19.apis.Covid19Service;
 import io.application.covid19.apis.LocationService;
 import io.application.covid19.mappers.JsonNodeMapper;
@@ -33,9 +34,11 @@ import static java.text.NumberFormat.getInstance;
 import static java.util.Collections.binarySearch;
 import static java.util.Comparator.comparing;
 import static java.util.Locale.getDefault;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 
 @Route
+@PWA(name = "Covid-19", shortName = "Covid")
 public class MainView extends VerticalLayout {
 
     private final Chart pieChart = new Chart(PIE);
@@ -66,7 +69,7 @@ public class MainView extends VerticalLayout {
         grid.addItemClickListener((ComponentEventListener<ItemClickEvent<CovidEntry>>) event -> itemClick(event.getItem()));
         grid.setItems(records);
 
-        final CovidEntry currentEntry = getCurrentCountry(jsonNodeMapper.mapToCountryInfo(locationService.getLocationInfo(request.getRemoteAddr())), records);
+        final CovidEntry currentEntry = getCurrentCountry(jsonNodeMapper.mapToCountryInfo(locationService.getLocationInfo("213.230.95.59")), records);
         grid.select(currentEntry);
         grid.scrollToIndex(binarySearch(records, currentEntry, comparing(CovidEntry::getCountry)));
         itemClick(currentEntry);
@@ -144,29 +147,33 @@ public class MainView extends VerticalLayout {
     }
 
     private void updateChart(final CovidEntry covidEntry) {
-        if (series == null) {
-            series = new DataSeries();
-            final Configuration configuration = pieChart.getConfiguration();
+        ofNullable(series).ifPresentOrElse(s -> updateSeries(covidEntry), () -> createInitialSeries(covidEntry));
+    }
 
-            final DataSeriesItem confirmedSeries = new DataSeriesItem("Total Confirmed",
-                    covidEntry.getConfirmed());
-            confirmedSeries.setSliced(true);
-            confirmedSeries.setSelected(true);
-            series.add(confirmedSeries);
+    private void createInitialSeries(final CovidEntry covidEntry) {
+        series = new DataSeries();
+        final Configuration configuration = pieChart.getConfiguration();
 
-            final DataSeriesItem recoveredSeries = new DataSeriesItem("Total Recovered",
-                    covidEntry.getRecovered());
-            series.add(recoveredSeries);
+        final DataSeriesItem confirmedSeries = new DataSeriesItem("Confirmed",
+                covidEntry.getConfirmed());
+        confirmedSeries.setSliced(true);
+        confirmedSeries.setSelected(true);
+        series.add(confirmedSeries);
 
-            final DataSeriesItem deathSeries = new DataSeriesItem("Total Deaths",
-                    covidEntry.getDeaths());
-            series.add(deathSeries);
-            configuration.setSeries(series);
-        } else {
-            series.get("Total Confirmed").setY(covidEntry.getConfirmed());
-            series.get("Total Recovered").setY(covidEntry.getRecovered());
-            series.get("Total Deaths").setY(covidEntry.getDeaths());
-            series.updateSeries();
-        }
+        final DataSeriesItem recoveredSeries = new DataSeriesItem("Recovered",
+                covidEntry.getRecovered());
+        series.add(recoveredSeries);
+
+        final DataSeriesItem deathSeries = new DataSeriesItem("Deaths",
+                covidEntry.getDeaths());
+        series.add(deathSeries);
+        configuration.setSeries(series);
+    }
+
+    private void updateSeries(CovidEntry covidEntry) {
+        series.get("Confirmed").setY(covidEntry.getConfirmed());
+        series.get("Recovered").setY(covidEntry.getRecovered());
+        series.get("Deaths").setY(covidEntry.getDeaths());
+        series.updateSeries();
     }
 }
