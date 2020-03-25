@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Setter
@@ -22,7 +23,7 @@ public class Covid19Record {
     @RequiredArgsConstructor
     public static class Data {
 
-        private final String date;
+        private final LocalDate date;
         private final Integer confirmed;
         private final Integer deaths;
         private final Integer recovered;

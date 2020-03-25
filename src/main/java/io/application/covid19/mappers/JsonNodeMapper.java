@@ -7,6 +7,8 @@ import io.application.covid19.models.Covid19Record;
 import lombok.SneakyThrows;
 import org.mapstruct.Mapper;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,9 +28,21 @@ public interface JsonNodeMapper {
 
     private static List<Covid19Record.Data> data(final JsonNode node) {
         return stream(node.spliterator(), true)
-                .map(data -> new Covid19Record.Data(data.get("date").asText(), data.get("confirmed").asInt(),
+                .map(data -> new Covid19Record.Data(toLocalDate(data.get("date").asText()), data.get("confirmed").asInt(),
                         data.get("deaths").asInt(), data.get("recovered").asInt()))
                 .collect(toList());
+    }
+
+    private static LocalDate toLocalDate(final String date) {
+        try {
+            return LocalDate.parse(date);
+        } catch (final Exception e) {
+            try {
+                return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-dd"));
+            } catch (final Exception e1) {
+                return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d"));
+            }
+        }
     }
 
     default Covid19 map(final JsonNode root) {
