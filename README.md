@@ -1,4 +1,4 @@
 # Statistics of Covid19
 
-Home project while working remotely
+Personal project while at home
  
